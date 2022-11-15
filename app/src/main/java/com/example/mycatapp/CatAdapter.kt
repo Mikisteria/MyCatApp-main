@@ -2,17 +2,25 @@ package com.example.mycatapp
 
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.nfc.Tag
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.mycatapp.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class CatAdapter(var items: MutableList<Cat>, context: Context) : RecyclerView.Adapter<CatViewHolder>() {
-
     private val context = context
+
+    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var fireBaseAuth: FirebaseAuth
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.cat_item, parent, false)
         return CatViewHolder(view)
@@ -32,9 +40,10 @@ class CatAdapter(var items: MutableList<Cat>, context: Context) : RecyclerView.A
             .placeholder(com.google.android.material.R.drawable.ic_clock_black_24dp)
             .centerCrop()
             .into(holder.image_url)
-        }
 
 
+
+    }
 
 
 

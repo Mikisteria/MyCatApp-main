@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +32,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var rvKitties : RecyclerView
     private val progressDialog by lazy { CustomProgressDialog(this) }
     private lateinit var binding: ActivityMainBinding
+    private lateinit var btnLogout : Button
     val firebaseAuth = FirebaseAuth.getInstance()
+
+    lateinit var mGoogleSignInClient : GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "llego?")
@@ -46,7 +50,27 @@ class MainActivity : AppCompatActivity() {
         adapter = CatAdapter(kitties, this)
         rvKitties.adapter = adapter
 
+        btnLogout = findViewById(R.id.btnLogout)
+        btnLogout.setOnClickListener {
+            mGoogleSignInClient.signOut().addOnCompleteListener {
+                firebaseAuth.signOut()
+                checkUser()
+                startActivity(Intent(this@MainActivity, Login::class.java))
+                
+            }
+        }
+
+        // Configure the Google Sign OUT
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
     }
+
+
     override fun onStart() {
         super.onStart()
         progressDialog.start("Recuperando Datos...")
@@ -68,6 +92,9 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
+
+
+
 
     fun start(context: Context){
         scope.launch{
