@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,8 +35,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var btnLogout : Button
     val firebaseAuth = FirebaseAuth.getInstance()
+    private lateinit var searchView: SearchView
 
     lateinit var mGoogleSignInClient : GoogleSignInClient
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "llego?")
@@ -56,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                 firebaseAuth.signOut()
                 checkUser()
                 startActivity(Intent(this@MainActivity, Login::class.java))
-                
+
             }
         }
 
@@ -69,6 +73,13 @@ class MainActivity : AppCompatActivity() {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
     }
+
+    private fun buscarRazas() {
+        searchView = findViewById(R.id.searchView)
+        //searchView.setOnQueryTextListener()
+    }
+
+
 
 
     override fun onStart() {
